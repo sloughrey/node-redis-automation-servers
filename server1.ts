@@ -26,6 +26,7 @@ async function queueJobs() {
     console.log("Pushing fresh batch of jobs onto the queue (every 3 mins)");
     const res = await redis?.set("jobsQueued", 1, "EX", 170, "NX");
     if (res) {
+        // @todo use a json stringified object of job metadata here (e.g. name, frequency, errors, retries)
       redis?.lpush(
         "jobs",
         "importUsers",
