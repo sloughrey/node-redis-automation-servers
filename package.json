@@ -1,0 +1,27 @@
+{
+  "name": "redis-automation-servers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sloughrey/node-redis-automation-servers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sloughrey/node-redis-automation-servers/issues"
+  },
+  "homepage": "https://github.com/sloughrey/node-redis-automation-servers#readme",
+  "dependencies": {
+    "cron": "^3.1.7",
+    "ioredis": "^5.4.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
