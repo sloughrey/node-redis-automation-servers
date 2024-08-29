@@ -1,16 +1,100 @@
-interface jobDict {
-  [key: string]: Function;
+interface job {
+  name: string;
+  callback: Function;
+  retryCount: number;
+  errors: string[];
 }
 
-const jobs: jobDict = {
-  importUsers: importUsers,
-  sendReminderEmails: sendReminderEmails,
-  performHeavyCalculation: performHeavyCalculation,
-  ingestAppData: ingestAppData,
-  importUsers2: importUsers,
-  sendReminderEmails2: sendReminderEmails,
-  performHeavyCalculation2: performHeavyCalculation,
-  ingestAppData2: ingestAppData,
+interface jobs {
+  [key: string]: job[];
+}
+
+const jobData: jobs = {
+  sequentialJobs: [
+    {
+      name: "Import Users",
+      callback: importUsers,
+      retryCount: 0,
+      errors: [],
+    },
+    {
+      name: "Perform Heavy Calculation",
+      callback: performHeavyCalculation,
+      retryCount: 0,
+      errors: [],
+    },
+    {
+      name: "Send Reminder Emails",
+      callback: sendReminderEmails,
+      retryCount: 0,
+      errors: [],
+    },
+
+  ],
+  importUsers: [
+    {
+      name: "Import Users",
+      callback: importUsers,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  sendReminderEmails: [
+    {
+      name: "Send Reminder Emails",
+      callback: sendReminderEmails,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  performHeavyCalculation: [
+    {
+      name: "Perform Heavy Calculation",
+      callback: performHeavyCalculation,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  ingestAppData: [
+    {
+      name: "Ingest Application Data",
+      callback: ingestAppData,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  importUsers2: [
+    {
+      name: "Import Users 2",
+      callback: importUsers,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  sendReminderEmails2: [
+    {
+      name: "Send Reminder Emails 2",
+      callback: sendReminderEmails,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  performHeavyCalculation2: [
+    {
+      name: "Perform Heavy Calculation 2",
+      callback: performHeavyCalculation,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  ingestAppData2: [
+    {
+      name: "Ingest Application Data 2",
+      callback: ingestAppData,
+      retryCount: 0,
+      errors: [],
+    },
+  ],
 };
 
 async function importUsers() {
@@ -28,9 +112,9 @@ async function sendReminderEmails() {
 }
 
 async function performHeavyCalculation() {
-  console.log("running job to perform a heavy calculation (60s)");
+  console.log("running job to perform a heavy calculation (40s)");
 
-  await wait(60000);
+  await wait(40000);
 
   console.log("performHeavyCalculation job complete");
 }
@@ -47,11 +131,11 @@ const wait = (t: number) =>
   new Promise((resolve, reject) => setTimeout(resolve, t));
 
 class JobFactory {
-  static get(name: string) {
-    if (typeof jobs[name] == "undefined") {
-      throw new Error("Invalid job name supplied");
+  static get(name: string): job[] {
+    if (typeof jobData[name] == "undefined") {
+      throw new Error("Invalid job group name supplied");
     }
-    return jobs[name];
+    return jobData[name];
   }
 }
 
