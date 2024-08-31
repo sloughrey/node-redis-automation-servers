@@ -19,15 +19,17 @@ async function init() {
 }
 
 /**
+ * Queue the batch job groups we want to run
+ * Batch job group names must match the names of the "jobs" array in cronjobs.ts
  * Set a key using distributed lock to ensure only 1 server pushes jobs onto the queue
  */
 async function queueJobs() {
-  new CronJob("*/3 * * * *", async () => {
+  new CronJob("*/5 * * * *", async () => {
     console.log("Pushing fresh batch of jobs onto the queue (every 5 mins)");
     const res = await redis?.set("jobsQueued", 1, "EX", 300, "NX");
     if (res) {
       // @todo use a json stringified object of job metadata here (e.g. name, frequency, errors, retries)
-      redis?.rpush(
+      redis?.lpush(
         "jobs",
         "sequentialJobs",
         "importUsers",
@@ -62,7 +64,8 @@ async function processJob() {
 
         for (const job of jobGroup) {
           console.log(`Processing job ${job.name}`)
-          await job.callback();
+          console.log(`parameters passed: `, job.callbackParams)
+          await job.callback(...job.callbackParams);
           console.log(`Done proccessing job ${job.name}`);
         }
 
