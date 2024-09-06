@@ -1,3 +1,5 @@
+import { server } from "./batchServer";
+
 interface job {
   name: string;
   callback: Function;
@@ -114,38 +116,79 @@ const jobData: jobs = {
       errors: [],
     },
   ],
+  importUsers3: [
+    {
+      name: "Import Users 666 777 888 9999",
+      callback: importUsers,
+      callbackParams: [[666, 777, 888, 999]],
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  sendReminderEmails3: [
+    {
+      name: "Send Reminder Emails 2",
+      callback: sendReminderEmails,
+      callbackParams: [],
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  performHeavyCalculation3: [
+    {
+      name: "Perform Heavy Calculation 2",
+      callback: performHeavyCalculation,
+      callbackParams: [],
+      retryCount: 0,
+      errors: [],
+    },
+  ],
+  ingestAppData3: [
+    {
+      name: "Ingest Application Data 2",
+      callback: ingestAppData,
+      callbackParams: [],
+      retryCount: 0,
+      errors: [],
+    },
+  ],
 };
 
 async function importUsers(empNumStartsWith: number[]) {
-  console.log(`running job to import users starting with ${empNumStartsWith} from external source (20s)`);
+  console.log(`running job to import users starting with ${empNumStartsWith} from external source (60s)`);
 
-  await wait(20000);
+  await wait(60000);
   console.log("importUsers job complete");
+  server.decrementActiveJobCount();
 }
 
 async function sendReminderEmails() {
-  console.log("running job to send reminder emails (20s)");
+  console.log("running job to send reminder emails (60s)");
 
-  await wait(20000);
+  await wait(60000);
   console.log("sendReminderEmails job complete");
+  server.decrementActiveJobCount();
 }
 
 async function performHeavyCalculation() {
-  console.log("running job to perform a heavy calculation (40s)");
+  console.log("running job to perform a heavy calculation (120s)");
 
-  await wait(40000);
+  await wait(120000);
 
   console.log("performHeavyCalculation job complete");
+  server.decrementActiveJobCount();
 }
 
 async function ingestAppData() {
-  console.log("running job to ingest app data (20s)");
+  console.log("running job to ingest app data (60s)");
 
-  await wait(20000);
+  await wait(60000);
 
   console.log("ingestAppData job complete");
+  server.decrementActiveJobCount();
 }
 
+// simple awaitable setTimeout calls to simulate job running
 const wait = (t: number) =>
   new Promise((resolve, reject) => setTimeout(resolve, t));
 
